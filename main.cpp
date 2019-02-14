@@ -112,26 +112,26 @@ void PreparazioneCustomizzazioniDefault(){
     */
     GooseGameTitleColor=14; //DETERMINA IL COLORE DELLA SCHERMATA "Goose Game" iniziale
 
-	ponte.pos=(unsigned) 6;
+	ponte.pos=(unsigned) 3;
 	ponte.color=(unsigned) 6;
 	strcpy(ponte.effetto,"ripete il movimento !");
 
-	locanda.pos=(unsigned) 19;
+	locanda.pos=(unsigned) 4;
 	locanda.color=(unsigned) 14;
 	strcpy(locanda.effetto,"rimane fermo ");
 	locanda.attesaTurni=(unsigned)3;
 
 
-	prigione.pos=(unsigned) 52;
+	prigione.pos=(unsigned) 5;
 	prigione.color=(unsigned) 8;
 	strcpy(prigione.effetto,"rimane imprigionato affinche' un altro giocatore verra' imprigionato a sua volta !");
 
-	labirinto.pos=(unsigned) 42;
+	labirinto.pos=(unsigned) 7;
 	labirinto.color=(unsigned) 7;
 	strcpy(labirinto.effetto,"torna alla casella ");
-	labirinto.backToPos=(unsigned) 39;
+	labirinto.backToPos=(unsigned) 6;
 
-	scheletro.pos=(unsigned) 58;
+	scheletro.pos=(unsigned) 8;
 	scheletro.color=(unsigned) 12;
 	strcpy(scheletro.effetto,"torna alla casella ");
 	scheletro.backToPos=(unsigned) 1;
@@ -145,96 +145,31 @@ int main(int argc, char** argv){
 	system("color 0f");
 	PreparazioneColori();//Assegna ad ogni numero il suo nome testuale del colore ed il colore che fa contrasto
 	PreparazioneCustomizzazioniDefault();//Definisce i parametri variabili sopra
-	do{
+
     system("cls");
     menurepeat=false;
-	drawTitle();//Disegna il titolo "Goose Game"
-
-	////////SEQUENZA DISEGNO MENU' INIZIALE////
-	setColor(0,GooseGameTitleColor);
-	gotoXY(59,38);
-    cout<<a;
-	resetColor();
-	cout<<" BENVENUTO! ";
-	setColor(0,GooseGameTitleColor);
-    cout<<a;
-    gotoXY(51,40);
-    setColor(0,GooseGameTitleColor);
-    cout<<"1. Nuova Partita";
-    gotoXY(51,42);
-    setColor(0,7);
-    cout<<"2. Carica partita";
-    gotoXY(51,44);
-    setColor(0,GooseGameTitleColor);
-    cout<<"3. Exit";
-	setColor(0,GooseGameTitleColor);
-    gotoXY(51,46);
-    resetColor();
-    cout<<"> ";
-    setColor(0,GooseGameTitleColor);
-    ///////////////////////////////////////////
-    cin>>scelta;
-	switch(scelta){//SCELTA OPZIONE MENU'
-		case 1://1. Nuova Partita
 
 			 /////////SEQUENZA SCELTA NUMERO GIOCATORI/////////////
-		 do{
-		 	 scelta=0;
-		     repeat=false;
-		     system("cls");
-	         drawTitle();
-		     drawSettingPlayerNumber();
-		     gotoXY(56,41);
-		     cout<<"> ";
-             setColor(0,GooseGameTitleColor);
-             cin>>ngioc;
-	        }while(ngioc<1||ngioc>6);//Ripete il ciclo finch� non viene inserito un numero valido
+		 ngioc=4;
 	        ///////////////////////////////////////////////////////
 	        //////////SEQUENZA SCELTA NOMI GIOCATORI///////////////
-         for(turno=1;turno<=ngioc;turno++){
-		     system("cls");
-	         drawTitle();
-		     drawSettingPlayerName();
-		     gotoXY(56,41);
-		     cout<<"> ";
-             setColor(0,GooseGameTitleColor);
-             cin>>(stats[turno].name);
-			}
+		     strcpy(stats[1].name,"Mario");
+		     strcpy(stats[2].name,"Luigi");
+		     strcpy(stats[3].name,"Peach");
+		     strcpy(stats[4].name,"Toad");
 			///////////////////////////////////////////////////////
 			//////////SEQUENZA SCELTA COLORI GIOCATORI/////////////
-		 for(turno=1;turno<=ngioc;turno++){
-			 int n=0;
-		     system("cls");
-		     drawTitle();
-		     saveCaselleColors();
-		     drawSettingAvailableColors();
-		     drawSettingPlayerColors();
-		     gotoXY(56,41);
-		     cout<<"> ";
-             setColor(0,GooseGameTitleColor);
-             cin>>n;
-             if (n<1||n>15||color[n].alreadyTaken==true){//Se il numero messo in input NON � valido o � gi� occupato ripete il ciclo
-                 turno--;
-			    }
-			 else{//Se il numero messo in input � valido lo imposta come colore del giocatore e lo segna come occupato
-				 stats[turno].color=n;
-				 color[n].alreadyTaken=true;
-			    }
-	        }
-	        //////////////////////////////////////////////////////
-	        /////////DISEGNO RULES////////////////////
-	        system("cls");
-	        drawRules();
-	        cout<<"n\n\n\t\t";
-	        system("pause");
-	        //////////////////////////////////////////
+
+		 	stats[1].color=9;
+		 	stats[2].color=10;
+		 	stats[3].color=11;
+		 	stats[4].color=13;
 
 
 	        system("cls");
             ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
             drawTabellone(1); //PRIMA APPARIZIONE DEL TABELLONE (IN INPUT HO MESSO 1: E' IL TEMPO CHE SCORRE FRA UN CARATTERE E L'ALTRO. LE PROSSIME VOLTE METTERO' 0 COSI' CHE APPAIA ISTANTANEAMENTE
 
-	        ;
 	        //////////////////INIZIO SEQUENZA PRINCIPALE GIOCO/////////////////////////////////////////////
 	        for(turno=1;turno<=ngioc;turno++){ //Questo for scorre fra tutti i giocatori creando il fattore dei turni, infondo al for c'� il controllo che permette di ritornare a turno=1, nel caso sia turno==ngioc
 	         if(stats[turno].attesaTurni!=0||stats[turno].inPrigione==true){ //Se il giocatore � sotto l'effetto di una casella speciale, lascia il compito al void drawTurn() che disegner� l'effetto della casella sullo schermo
@@ -247,9 +182,10 @@ int main(int argc, char** argv){
 
 				 cout<<"Premi un tasto per lanciare i dadi!";//Il messaggio del system("pause") <<leggere sotto>>
 			   	 system("pause >nul")/*Crea un system("pause") senza il messaggio*/;resetColor();gotoXY(160,10);cout<<"                                   ";//Quando il giocatore va avanti, cancella il messaggio del system("pause")
+			   	 stats[turno].ntiri++;//Incrementa i tiri del giocatore cos� da stilare una classifica a fine programma
+                  tiro=drawLancioDadi();//Fa partire il sottoprogramma che stampa l'animazione degli slot e returna la somma dei dadi
 
-				 stats[turno].ntiri++;//Incrementa i tiri del giocatore cos� da stilare una classifica a fine programma
-				 tiro=drawLancioDadi();//Fa partire il sottoprogramma che stampa l'animazione degli slot e returna la somma dei dadi
+
 
                  //////////////////////
                  /////////SEQUENZA ANIMAZIONE SPOSTAMENTO PEDINA///////
@@ -351,7 +287,7 @@ int main(int argc, char** argv){
 			     	 setColor(stats[turno].color,color[stats[turno].color].contrast); cout<<stats[turno].name;
 			     	 setColor(labirinto.color,color[labirinto.color].contrast); cout<<" , "<<labirinto.effetto<<labirinto.backToPos;
 
-			     	 for(stats[turno].pos; stats[turno].pos<labirinto.backToPos; stats[turno].pos++){
+			     	 for(stats[turno].pos; stats[turno].pos<=labirinto.backToPos; stats[turno].pos++){
                	         stats[turno].pos++;
                	         Sleep(90);
                	         drawTabellone(0);
@@ -398,82 +334,14 @@ int main(int argc, char** argv){
 			     if(turno==ngioc){
 			   	     turno=0;
 			        }
+				if(stats[4].ntiri==2){
+					system("cls");
+					return 0;
+				}
 			}
 	        //////////////////FINE SEQUENZA PRINCIPALE GIOCO/////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			break;
-
-
-
-		case 2://2. Carica Partita
-			menurepeat=true;
-
-			break;
-
-		case 3://3. Esci
-			system("cls");
-			drawTitle();
-			setColor(0,GooseGameTitleColor);
-	        gotoXY(59,38);
-            cout<<a;
-	        resetColor();
-	        cout<<" TE NE VAI DI GIA'? TORNA PRESTO! ";
-	        setColor(0,GooseGameTitleColor);
-            cout<<a;
-            resetColor();
-	        cout<<"\n\n\n\t\t\t\t\t\t\t";
-			break;
-		default://Opzione inesistente
-			gotoXY(49,46);
-			cout<<" ";
-			gotoXY(49,46);
-			menurepeat=true;//Fa in modo che il men� si ripeta
-			break;
-	}
-	}while (menurepeat==true);//Se � su true(� stato digitato un comando non valido) ripete il men�
-
 	cout<<"\n\n\n";
-	int test;
-	cin>>test;
 
 	return 0 ;
 }
@@ -711,7 +579,7 @@ void drawSettingAvailableColors(){//DISEGNA I COLORI DISPONIBILI A SX DELLA FINE
      	 stats[turno].attesaTurni--;
      	 drawLocanda();
      	 setColor(stats[turno].color,color[stats[turno].color].contrast); cout<<stats[turno].name;
-     	 setColor(locanda.color,color[locanda.color].contrast); cout<<" � intento a bere una bella birra fresca! Deve aspettare ancora "<<stats[turno].attesaTurni<<" turni!";
+     	 setColor(locanda.color,color[locanda.color].contrast); cout<<" e' intento a bere una bella birra fresca! Deve aspettare ancora "<<stats[turno].attesaTurni<<" turni!";
 		}
      else if(stats[turno].inPrigione==true){
      	 drawPrigione();
@@ -755,45 +623,69 @@ void drawSettingAvailableColors(){//DISEGNA I COLORI DISPONIBILI A SX DELLA FINE
 		    }
     	 /////////////////////////////////////////////////////////////////
 
-    	 int num1a=3,num1b=2,num1c=1;//Variabili dei 3 numeri che scorrono nel primo slot. Il numero risultante a fine animazione � quello centrale (num1b)
-    	 int num2a=3,num2b=2,num2c=1;//Variabili dei 3 numeri che scorrono nel secondo slot. Il numero risultante a fine animazione � quello centrale (num2b)
-    	 int time; //E' la velocit� con cui i numeri scorrono nello slot. Incrementandolo volta per volta si ha l'effetto dei numeri che rallentano
-    	 int k1,k2;//Variabile temporale per poter trasferire il contenuto da una variabile all'altra
-		 for(time=5;time<300;time+=20){
-		 	 ///Qua genera il numero in basso del PRIMO slot e scorre il resto dei numeri presenti del PRIMO slot in alto
-    	 	 Sleep(time);
-    	 	 k1=num1c;
-    	 	 num1c=rand()%6+1;
-    	 	 k2=num1b;
-    	 	 num1b=k1;
-    	 	 num1a=k2;
-    	 	 ///////////////
+         int num1b=1;//Variabili dei 3 numeri che scorrono nel primo slot. Il numero risultante a fine animazione � quello centrale (num1b
+         int num2b=2;//Variabili dei 3 numeri che scorrono nel secondo slot. Il numero risultante a fine animazione � quello centrale (num2b)
 
-    	 	 ///Qua genera il numero in basso del SECONDO slot e scorre il resto dei numeri presenti del SECONDO slot in alto
-    	 	 Sleep(time);
-    	 	 k1=num1c;
-    	 	 num2c=rand()%6+1;
-    	 	 k2=num1b;
-    	 	 num2b=k1;
-    	 	 num2a=k2;
-    	 	 ///////////////
+		 	 ///Qua genera il numero in basso del PRIMO slot e scorre il resto dei numeri presenti del PRIMO slot in alto
+    	 	 switch(turno){
+    	 	 	case 1:
+    	 	 		switch(stats[turno].ntiri){
+    	 	 			default:
+    	 	 		    num1b=1;num2b=1;
+						break;
+					  }
+    	 	 	break;
+
+    	 	 	case 2:
+    	 	 		switch(stats[turno].ntiri){
+    	 	 			default:
+    	 	 			num1b=1;num2b=0;
+    	 	 			break;
+    	 	 			case 2:
+    	 	 			num1b=2;num2b=1;
+    	 	 			break;
+					  }
+    	 	 	break;
+
+    	 	 	case 3:
+    	 	 		switch(stats[turno].ntiri){
+    	 	 			default:
+    	 	 			num1b=1;num2b=1;
+    	 	 			break;
+    	 	 			case 1:
+    	 	 			num1b=1;num2b=2;
+    	 	 			break;
+					  }
+    	 	 	break;
+
+    	 	 	case 4:
+    	 	 		switch(stats[turno].ntiri){
+    	 	 			default:
+    	 	 			num1b=1;num2b=2;
+    	 	 			break;
+    	 	 			case 1:
+    	 	 			num1b=3;num2b=4;
+    	 	 			break;
+					  }
+    	 	 	break;
+		    }
 
     	 	 setColor(stats[turno].color,color[stats[turno].color].contrast);
     	 	 /////Stampa numeri PRIMO slot////
     	 	 x=158,y=17;//Coordinate numero infondo al PRIMO slot
-    	 	 gotoXY(x,y);cout<<num1c;
+    	 	 gotoXY(x,y);cout<<num1b;
     	 	 gotoXY(x,y-2);cout<<num1b;
-    	 	 gotoXY(x,y-4);cout<<num1a;
+    	 	 gotoXY(x,y-4);cout<<num1b;
     	 	 /////////////////////////////////
 
     	 	 /////Stampa numeri SECONDO slot////
     	 	 x=166,y=17;//Coordinate numero infondo al SECONDO slot
-    	 	 gotoXY(x,y);cout<<num2c;
+    	 	 gotoXY(x,y);cout<<num2b;
     	 	 gotoXY(x,y-2);cout<<num2b;
-    	 	 gotoXY(x,y-4);cout<<num2a;
+    	 	 gotoXY(x,y-4);cout<<num2b;
     	 	 /////////////////////////////////
 
-		 }
+
 
              /////PULIZIA NUMERI NELLA SLOT ECCETTO PER QUELLI CENTRALI//
     	 	 x=158,y=17;
